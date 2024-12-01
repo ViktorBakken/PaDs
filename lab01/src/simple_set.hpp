@@ -23,9 +23,7 @@ private:
 public:
   SimpleSet(EventMonitor<SimpleSet, StdSet, SetOperator> *monitor)
       : monitor(monitor) {
-    this->head = new SimpleSetNode;
-    this->head->value = INT_MIN;
-    this->head->next = nullptr;
+    this->head = new SimpleSetNode(INT_MIN,nullptr);
   }
 
   ~SimpleSet() override {
@@ -38,25 +36,16 @@ public:
     }
   }
 
-  SimpleSetNode *CreateNode(int elem, SimpleSetNode *nextNode) {
-    SimpleSetNode *newNode = new SimpleSetNode;
-    newNode->value = elem;
-    newNode->next = nextNode;
-    return newNode;
-  }
 
   bool add(int elem) override {
     bool result = false;
     SimpleSetNode *current = this->head;
 
-    while (current->next != nullptr) {
+    while (current->next != nullptr && current->value != elem) {
       int nextValue = current->next->value;
-      if (nextValue == elem) {
-        current = current->next;
-        break;
-      } else if (elem < nextValue) {
+      if (elem < nextValue) {
         // Insert new element in the correct position
-        current->next = CreateNode(elem, current->next);
+        current->next = new SimpleSetNode(elem, current->next);
         result = true;
         break;
       }
@@ -65,7 +54,7 @@ public:
 
     // If we reach the end of the list, insert the new element
     if (!result && current->value != elem) {
-      current->next = CreateNode(elem, nullptr);
+      current->next = new SimpleSetNode(elem, nullptr);
       result = true;
     }
 
@@ -74,17 +63,45 @@ public:
     return result;
   }
 
+  SimpleSetNode *RemoveNode(SimpleSetNode *remNode) {
+    SimpleSetNode *nextNode = remNode->next;
+    delete (remNode);
+    return nextNode;
+  }
+
   bool rmv(int elem) override {
     bool result = false;
-    // A02: Add code to remove the element from the set and update `result`.
+    SimpleSetNode *current = this->head;
+    int nextValue = INT_MIN;
+
+    while (current->next != nullptr && elem >= nextValue) {
+      nextValue = current->next->value;
+      if (nextValue == elem) {
+        // Remove element in the correct position
+        current->next = RemoveNode(current->next);
+        result = true;
+        break;
+      }
+      current = current->next;
+    }
+
     this->monitor->add(SetEvent(SetOperator::Remove, elem, result));
     return result;
   }
 
   bool ctn(int elem) override {
     bool result = false;
-    // A02: Add code to check if the element is inside the set and update
-    // `result`.
+    SimpleSetNode *current = this->head;
+
+    while (current != nullptr && elem >= current->value) {
+      if (current->value == elem) {
+        // Set true if value exist in list
+        result = true;
+        break;
+      }
+      current = current->next;
+    }
+
     this->monitor->add(SetEvent(SetOperator::Contains, elem, result));
     return result;
   }
@@ -92,6 +109,6 @@ public:
   void print_state() override {
     // A02: Optionally, add code to print the state. This is useful for
     // debugging, but not part of the assignment.
-    std::cout << "SimpleSet {...}";
+    // std::cout << ;
   }
 };

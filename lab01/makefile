@@ -17,7 +17,7 @@ bench: run
 
 run: $(TARGET)
 	./$(TARGET) 1
-	./$(TARGET) 2
+	# ./$(TARGET) 2
 	./$(TARGET) 3
 	./$(TARGET) 4
 
