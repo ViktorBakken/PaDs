@@ -14,6 +14,17 @@ bench: CFLAGS += -O3
 bench: clean
 bench: all
 
+run:$(TARGET)
+	./$(TARGET) 1
+	./$(TARGET) 2
+	./$(TARGET) 3
+	make bench
+	./$(TARGET) 4
+
+debug:$(TARGET)
+	gdb ./$(TARGET)
+	
+
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 obj/%.o: src/%.cpp src/*.hpp
