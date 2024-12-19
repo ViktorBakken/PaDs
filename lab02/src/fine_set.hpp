@@ -25,8 +25,7 @@ private:
 public:
   /// Initiate the internal state
   FineSet() {
-    //-2147483648 = INT_MIN (32-bit)
-    head = new FineSetNode(-2147483648, nullptr);
+    head = new FineSetNode(INT_MIN, nullptr);
   }
 
   /// Destructor to clean up allocated nodes.
@@ -130,7 +129,7 @@ public:
     current->lock.unlock();
 
     return result;
-    }
+  }
 
   void print_state() override { std::cout << "FineSet {...}"; }
 };

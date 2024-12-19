@@ -15,6 +15,7 @@ bench: clean
 bench: all
 
 run:$(TARGET)
+	./$(TARGET) 6
 	./$(TARGET) 1
 	./$(TARGET) 2
 	./$(TARGET) 3

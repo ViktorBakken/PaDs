@@ -46,11 +46,9 @@ private:
 public:
   LazySet() {
     // A02: Initiate the internal state
-    this->tail = new LazySetNode(2147483647, false,
-                                 nullptr); // 2147483647 = INT_MAX (32-bit)
+    this->tail = new LazySetNode(INT_MAX, false, nullptr);
 
-    this->head = new LazySetNode(-2147483648, false,
-                                 tail); //-2147483648 = INT_MIN (32-bit)
+    this->head = new LazySetNode(INT_MIN, false, tail);
   }
 
   ~LazySet() override {

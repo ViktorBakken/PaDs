@@ -43,10 +43,8 @@ private:
 public:
   OptimisticSet() {
     // A01: Initiate the internal state
-    this->last = new OptimisticSetNode(
-        2147483647, nullptr); // 2147483647 = INT_MAX (32-bit)
-    this->head = new OptimisticSetNode(-2147483648,
-                                       last); //-2147483648 = INT_MIN (32-bit)
+    this->last = new OptimisticSetNode(INT_MAX, nullptr);
+    this->head = new OptimisticSetNode(INT_MIN, last);
   }
 
   ~OptimisticSet() override {
